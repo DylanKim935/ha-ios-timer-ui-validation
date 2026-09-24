@@ -1,0 +1,39 @@
+name: Native timer UI comparison
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: xcode-27
+    timeout-minutes: 75
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_27.0.app/Contents/Developer
+      HOMEBREW_NO_INSTALL_CLEANUP: 'TRUE'
+      FASTLANE_SKIP_UPDATE_CHECK: 'true'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Fetch the exact upstream source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: home-assistant/iOS
+          ref: 2bca3df909a966686b14c5c552242a03fa28d064
+          path: upstream
+          persist-credentials: false
+      - uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b
+        with:
+          working-directory: upstream
+          ruby-version: .ruby-version
+          bundler-cache: true
+      - name: Build and capture native SwiftUI before and after
+        run: python3 compare.py
+      - name: Upload native images and build evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: native-timer-ui
+          path: results/
+          if-no-files-found: error
+          retention-days: 7

@@ -1,0 +1,12 @@
+diff --git a/Sources/Extensions/Widgets/LiveActivity/HACompactTrailingView.swift b/Sources/Extensions/Widgets/LiveActivity/HACompactTrailingView.swift
+index 44e1b7b..ff530b0 100644
+--- a/Sources/Extensions/Widgets/LiveActivity/HACompactTrailingView.swift
++++ b/Sources/Extensions/Widgets/LiveActivity/HACompactTrailingView.swift
+@@ -25,6 +25,7 @@ struct HACompactTrailingView: View {
+             HAActivityChronometerText(end: end, start: state.chronometerStart)
+                 .font(.footnote.monospacedDigit())
+                 .foregroundStyle(.white)
++                .multilineTextAlignment(.trailing)
+                 .lineLimit(1)
+                 .minimumScaleFactor(Self.compactTrailingMinimumScaleFactor)
+                 .frame(width: Self.compactTrailingTimerWidth)
